@@ -1,0 +1,9 @@
+.DS_Store
+.classpath
+.project
+.settings/org.eclipse.jdt.core.prefs
+.settings/org.eclipse.m2e.core.prefs
+bin/plugin/.DS_Store
+bin/plugin/template/.DS_Store
+target/
+*.class

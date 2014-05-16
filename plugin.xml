@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+
+   id="MailChimpPlugin"
+   iconfile="icon.png"
+   description="MailChimp Plugin"
+   tooltip="It provides some API 1.2 operations"
+   category="Input"
+   classname="plugin.template.MailChimpStepMeta">
+		
+		<libraries>
+    		<library name="kettle-mailchimp.jar"/>
+        <library name="lib/mailchimp.jar"/>
+
+        <library name="dependency-jars/avalon-framework-4.1.3.jar"/>
+        <library name="dependency-jars/commons-codec-1.3.jar"/>
+        <library name="dependency-jars/commons-httpclient-3.1.jar"/>
+        <library name="dependency-jars/commons-logging-1.1.jar"/>
+        <library name="dependency-jars/junit-3.8.1.jar"/>
+
+
+        <library name="dependency-jars/xmlrpc-client-3.1.jar"/>
+        <library name="dependency-jars/xmlrpc-common-3.1.jar"/>
+        <library name="dependency-jars/xmlrpc-server-3.1.jar"/> 
+
+        <library name="dependency-jars/ws-commons-util-1.0.2.jar"/>
+
+        <!--<library name="dependency-jars/log4j-1.2.12.jar"/>
+        <library name="dependency-jars/logkit-1.0.1.jar"/>
+        <library name="dependency-jars/servlet-api-2.3.jar"/>
+        <library name="dependency-jars/xml-apis-1.0.b2.jar"/>-->
+       
+
+		</libraries>
+		
+</plugin>

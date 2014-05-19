@@ -42,40 +42,8 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 			throws KettleException {
 		meta = (MailChimpStepMeta) smi;
 		data = (MailChimpStepData) sdi;
-		
-
-		MailChimp mailchimp = new MailChimp();
-		log.logBasic("Key:" + meta.getOutputField() + " ; ListId: "
-				+ meta.getListId() + "; Campaign Id: " + meta.getIdCampaign());
-		mailchimp.initialize(meta.getOutputField(), meta.getListId());
-		
-		log.logBasic("Operation selected: " + meta.getOperation());
-		log.logBasic("Campaign Id selected: " + meta.getIdCampaign() + " ;");
-		
 		List<String> emails = null;
-
-		switch (meta.getOperation()) {
-		case 0:
-			log.logBasic("List Members: " + meta.getOperation());
-			emails = mailchimp.listMembers();
-			break;
-		case 1:
-			log.logBasic("Campaign Lists: " + meta.getOperation());
-			emails = mailchimp.getCampaigns();
-			break;
-		case 2:
-			log.logBasic("Emails Opened: " + meta.getOperation());
-			emails = mailchimp.getEmailsYES(meta.getIdCampaign());
-			break;
-		case 3:
-			log.logBasic("Emails Not Opened: " + meta.getOperation());
-			emails = mailchimp.getEmailsNO(meta.getIdCampaign());
-			break;
-		default:
-			log.logError("Incorrect Option selected in operations list");
-		}
-
-		System.out.println("Emails: " + emails);
+		
 		Object[] r = getRow(); // get row, blocks when needed!
 		if (r == null) // no more input to be expected...
 		{
@@ -86,12 +54,47 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 		if (first) {
 			first = false;
 
+			MailChimp mailchimp = new MailChimp();
+			log.logBasic("Key:" + meta.getOutputField() + " ; ListId: "
+					+ meta.getListId() + "; Campaign Id: "
+					+ meta.getIdCampaign());
+			mailchimp.initialize(meta.getOutputField(), meta.getListId());
+
+			log.logBasic("Operation selected: " + meta.getOperation());
+			log.logBasic("Campaign Id selected: " + meta.getIdCampaign() + " ;");
+
+			
+
+			switch (meta.getOperation()) {
+			case 0:
+				log.logBasic("List Members: " + meta.getOperation());
+				emails = mailchimp.listMembers();
+				break;
+			case 1:
+				log.logBasic("Campaign Lists: " + meta.getOperation());
+				emails = mailchimp.getCampaigns();
+				break;
+			case 2:
+				log.logBasic("Emails Opened: " + meta.getOperation());
+				emails = mailchimp.getEmailsYES(meta.getIdCampaign());
+				break;
+			case 3:
+				log.logBasic("Emails Not Opened: " + meta.getOperation());
+				emails = mailchimp.getEmailsNO(meta.getIdCampaign());
+				break;
+			default:
+				log.logError("Incorrect Option selected in operations list");
+			}
+
+			System.out.println("Emails: " + emails);
+
 			data.outputRowMeta = (RowMetaInterface) getInputRowMeta().clone();
 			meta.getFields(data.outputRowMeta, getStepname(), null, null, this);
 
 			logBasic("template step initialized successfully");
 
 		}
+		
 		Object[] outputRow;
 		String email;
 		for (int i = 0; i < emails.size(); i++) {

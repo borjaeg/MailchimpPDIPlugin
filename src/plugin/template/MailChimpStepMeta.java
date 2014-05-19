@@ -147,6 +147,7 @@ public class MailChimpStepMeta extends BaseStepMeta implements
 		CheckResult cr;
 
 		// See if we have input streams leading to this step!
+		log.logBasic("CHECKING!!!!!!!!!!");
 		if (input.length > 0) {
 			cr = new CheckResult(CheckResult.TYPE_RESULT_OK,
 					"Step is receiving info from other steps.", stepMeta);

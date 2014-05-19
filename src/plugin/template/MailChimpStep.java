@@ -14,6 +14,7 @@ package plugin.template;
 import java.util.List;
 
 import org.pentaho.di.core.Const;
+import org.pentaho.di.core.RowSet;
 import org.pentaho.di.core.exception.KettleException;
 import org.pentaho.di.core.row.RowDataUtil;
 import org.pentaho.di.core.row.RowMetaInterface;
@@ -45,6 +46,7 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 		List<String> emails = null;
 		
 		Object[] r = getRow(); // get row, blocks when needed!
+		
 		if (r == null) // no more input to be expected...
 		{
 			setOutputDone();
@@ -54,6 +56,8 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 		if (first) {
 			first = false;
 
+			// Check if there are any rows from the previous step
+			
 			MailChimp mailchimp = new MailChimp();
 			log.logBasic("Key:" + meta.getOutputField() + " ; ListId: "
 					+ meta.getListId() + "; Campaign Id: "
@@ -63,6 +67,7 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 			log.logBasic("Operation selected: " + meta.getOperation());
 			log.logBasic("Campaign Id selected: " + meta.getIdCampaign() + " ;");
 
+			log.logBasic(getInputRowMeta().toString());
 			
 
 			switch (meta.getOperation()) {
@@ -76,7 +81,15 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 				break;
 			case 2:
 				log.logBasic("Emails Opened: " + meta.getOperation());
-				emails = mailchimp.getEmailsYES(meta.getIdCampaign());
+				String campaign = meta.getIdCampaign();
+				if (campaign.equals("Campaign Id") || campaign.equals("")){
+					emails = mailchimp.getEmailsYES((String) r[0]);
+					System.out.println("Previous: " + (String) r[0]);
+					}
+				else{
+					emails = mailchimp.getEmailsYES(campaign);
+					System.out.println("Dialog: " + (String) r[0]);
+				}
 				break;
 			case 3:
 				log.logBasic("Emails Not Opened: " + meta.getOperation());

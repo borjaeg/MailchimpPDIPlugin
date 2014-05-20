@@ -31,10 +31,10 @@ public class MailChimpStepMeta extends BaseStepMeta implements
 		StepMetaInterface {
 
 	private static Class<?> PKG = MailChimpStepMeta.class; // for i18n purposes
-	private String outputField;
-	private String listId;
-	private String campaignId;
-	private int operation;
+	private String outputField="";
+	private String listId="";
+	private String campaignId ="";
+	private int operation=-1;
 
 	public MailChimpStepMeta() {
 		super();

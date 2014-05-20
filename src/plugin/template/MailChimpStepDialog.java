@@ -11,9 +11,6 @@
 
 package plugin.template;
 
-import java.awt.event.MouseListener;
-import java.util.Arrays;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -55,8 +52,11 @@ public class MailChimpStepDialog extends BaseStepDialog implements
 	private Text tCampaignId;
 	private Label lListOperations;
 	private List listOperations;
+	private Label lCampaignIdPreviousStep;
+	private Button idCampaignPreviousStep;
 	private FormData fdlValName, fdValName, ldValName, ldlValName, ddlValname,
-			ddValname, ldValCamapign, ddValCampaign;
+			ddValname, ldValCamapign, ddValCampaign, fdIdCampaignPreviousStep,
+			ldIdCampaignPreviousStep;
 
 	public MailChimpStepDialog(Shell parent, Object in, TransMeta transMeta,
 			String sname) {
@@ -151,6 +151,25 @@ public class MailChimpStepDialog extends BaseStepDialog implements
 		ldValName.top = new FormAttachment(wValName, margin);
 		tListId.setLayoutData(ldValName);
 
+		// Form Campaign Id from previous step
+		lCampaignIdPreviousStep = new Label(shell, SWT.RIGHT);
+		lCampaignIdPreviousStep.setText(BaseMessages.getString(PKG, "Template.FormCampaign.Label"));
+		props.setLook(lCampaignIdPreviousStep);
+		ldIdCampaignPreviousStep = new FormData();
+		ldIdCampaignPreviousStep.left = new FormAttachment(0, 0);
+		ldIdCampaignPreviousStep.right = new FormAttachment(middle, -margin);
+		ldIdCampaignPreviousStep.top = new FormAttachment(tListId, margin);
+		lCampaignIdPreviousStep.setLayoutData(ldIdCampaignPreviousStep);
+
+		idCampaignPreviousStep = new Button(shell, SWT.CHECK);
+		props.setLook(idCampaignPreviousStep);
+		//idCampaignPreviousStep.addModifyListener(lsMod);
+		fdIdCampaignPreviousStep = new FormData();
+		fdIdCampaignPreviousStep.left = new FormAttachment(middle, 0);
+		fdIdCampaignPreviousStep.right = new FormAttachment(100, 0);
+		fdIdCampaignPreviousStep.top = new FormAttachment(tListId, margin);
+		idCampaignPreviousStep.setLayoutData(fdIdCampaignPreviousStep);
+
 		// Campaign Id
 		lCampaignId = new Label(shell, SWT.RIGHT);
 		lCampaignId.setText(BaseMessages.getString(PKG,
@@ -159,7 +178,7 @@ public class MailChimpStepDialog extends BaseStepDialog implements
 		ldValCamapign = new FormData();
 		ldValCamapign.left = new FormAttachment(0, 0);
 		ldValCamapign.right = new FormAttachment(middle, -margin);
-		ldValCamapign.top = new FormAttachment(tListId, margin);
+		ldValCamapign.top = new FormAttachment(idCampaignPreviousStep, margin);
 		lCampaignId.setLayoutData(ldValCamapign);
 
 		tCampaignId = new Text(shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER);
@@ -168,7 +187,7 @@ public class MailChimpStepDialog extends BaseStepDialog implements
 		ddValCampaign = new FormData();
 		ddValCampaign.left = new FormAttachment(middle, 0);
 		ddValCampaign.right = new FormAttachment(100, 0);
-		ddValCampaign.top = new FormAttachment(tListId, margin);
+		ddValCampaign.top = new FormAttachment(idCampaignPreviousStep, margin);
 		tCampaignId.setLayoutData(ddValCampaign);
 
 		// Operations

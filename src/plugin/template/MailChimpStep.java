@@ -93,8 +93,8 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 			case 3:
 				log.logBasic("Emails Not Opened: " + meta.getOperation());
 				campaign = meta.getIdCampaign();
-				if (campaign == null || campaign.equals("null")){
-					emails = mailchimp.getEmailsNO(meta.getIdCampaign());
+				if (campaign == null || campaign.equals("") || campaign.equals("null")){
+					emails = mailchimp.getEmailsNO((String) r[0]);
 					System.out.println("Previous: " + (String) r[0]);
 					}
 				else{

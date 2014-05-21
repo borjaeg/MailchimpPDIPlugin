@@ -153,7 +153,8 @@ public class MailChimpStepDialog extends BaseStepDialog implements
 
 		// Form Campaign Id from previous step
 		lCampaignIdPreviousStep = new Label(shell, SWT.RIGHT);
-		lCampaignIdPreviousStep.setText(BaseMessages.getString(PKG, "Template.FormCampaign.Label"));
+		lCampaignIdPreviousStep.setText(BaseMessages.getString(PKG,
+				"Template.FormCampaign.Label"));
 		props.setLook(lCampaignIdPreviousStep);
 		ldIdCampaignPreviousStep = new FormData();
 		ldIdCampaignPreviousStep.left = new FormAttachment(0, 0);
@@ -163,7 +164,7 @@ public class MailChimpStepDialog extends BaseStepDialog implements
 
 		idCampaignPreviousStep = new Button(shell, SWT.CHECK);
 		props.setLook(idCampaignPreviousStep);
-		//idCampaignPreviousStep.addModifyListener(lsMod);
+		// idCampaignPreviousStep.addModifyListener(lsMod);
 		fdIdCampaignPreviousStep = new FormData();
 		fdIdCampaignPreviousStep.left = new FormAttachment(middle, 0);
 		fdIdCampaignPreviousStep.right = new FormAttachment(100, 0);
@@ -287,7 +288,10 @@ public class MailChimpStepDialog extends BaseStepDialog implements
 		wStepname.selectAll();
 		wValName.setText(input.getOutputField());
 		tListId.setText(input.getListId());
-		tCampaignId.setText(input.getIdCampaign());
+		if (input.getIdCampaign() == null)
+			tCampaignId.setText("Id Campaign");
+		else
+			tCampaignId.setText(input.getIdCampaign());
 		listOperations.select(input.getOperation());
 	}
 
@@ -303,7 +307,10 @@ public class MailChimpStepDialog extends BaseStepDialog implements
 		input.setOutputField(wValName.getText());
 		input.setListId(tListId.getText());
 		input.setOperaton(listOperations.getSelectionIndex());
-		input.setIdCampaign(tCampaignId.getText());
+		if (tCampaignId.equals(""))
+			input.setIdCampaign("Id Campaign");
+		else
+			input.setIdCampaign(tCampaignId.getText());
 		log.logBasic("Key:" + input.getOutputField() + " ; ListId: "
 				+ input.getListId());
 		dispose();

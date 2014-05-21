@@ -69,7 +69,7 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 
 			log.logBasic(getInputRowMeta().toString());
 			
-
+			String campaign;
 			switch (meta.getOperation()) {
 			case 0:
 				log.logBasic("List Members: " + meta.getOperation());
@@ -81,19 +81,25 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 				break;
 			case 2:
 				log.logBasic("Emails Opened: " + meta.getOperation());
-				String campaign = meta.getIdCampaign();
-				if (campaign == null){
+				campaign = meta.getIdCampaign();
+				if (campaign == null || campaign.equals("null")){
 					emails = mailchimp.getEmailsYES((String) r[0]);
 					System.out.println("Previous: " + (String) r[0]);
 					}
 				else{
 					emails = mailchimp.getEmailsYES(campaign);
-					//System.out.println("Dialog: " + (String) r[0]);
 				}
 				break;
 			case 3:
 				log.logBasic("Emails Not Opened: " + meta.getOperation());
-				emails = mailchimp.getEmailsNO(meta.getIdCampaign());
+				campaign = meta.getIdCampaign();
+				if (campaign == null || campaign.equals("null")){
+					emails = mailchimp.getEmailsNO(meta.getIdCampaign());
+					System.out.println("Previous: " + (String) r[0]);
+					}
+				else{
+					emails = mailchimp.getEmailsYES(campaign);
+				}
 				break;
 			default:
 				log.logError("Incorrect Option selected in operations list");

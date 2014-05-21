@@ -44,9 +44,9 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 		meta = (MailChimpStepMeta) smi;
 		data = (MailChimpStepData) sdi;
 		List<String> emails = null;
-		
+
 		Object[] r = getRow(); // get row, blocks when needed!
-		
+
 		if (r == null) // no more input to be expected...
 		{
 			setOutputDone();
@@ -57,55 +57,6 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 			first = false;
 
 			// Check if there are any rows from the previous step
-			
-			MailChimp mailchimp = new MailChimp();
-			log.logBasic("Key:" + meta.getOutputField() + " ; ListId: "
-					+ meta.getListId() + "; Campaign Id: "
-					+ meta.getIdCampaign());
-			mailchimp.initialize(meta.getOutputField(), meta.getListId());
-
-			log.logBasic("Operation selected: " + meta.getOperation());
-			log.logBasic("Campaign Id selected: " + meta.getIdCampaign() + " ;");
-
-			log.logBasic(getInputRowMeta().toString());
-			
-			String campaign;
-			switch (meta.getOperation()) {
-			case 0:
-				log.logBasic("List Members: " + meta.getOperation());
-				emails = mailchimp.listMembers();
-				break;
-			case 1:
-				log.logBasic("Campaign Lists: " + meta.getOperation());
-				emails = mailchimp.getCampaigns();
-				break;
-			case 2:
-				log.logBasic("Emails Opened: " + meta.getOperation());
-				campaign = meta.getIdCampaign();
-				if (campaign == null || campaign.equals("null")){
-					emails = mailchimp.getEmailsYES((String) r[0]);
-					System.out.println("Previous: " + (String) r[0]);
-					}
-				else{
-					emails = mailchimp.getEmailsYES(campaign);
-				}
-				break;
-			case 3:
-				log.logBasic("Emails Not Opened: " + meta.getOperation());
-				campaign = meta.getIdCampaign();
-				if (campaign == null || campaign.equals("") || campaign.equals("null")){
-					emails = mailchimp.getEmailsNO((String) r[0]);
-					System.out.println("Previous: " + (String) r[0]);
-					}
-				else{
-					emails = mailchimp.getEmailsYES(campaign);
-				}
-				break;
-			default:
-				log.logError("Incorrect Option selected in operations list");
-			}
-
-			System.out.println("Emails: " + emails);
 
 			data.outputRowMeta = (RowMetaInterface) getInputRowMeta().clone();
 			meta.getFields(data.outputRowMeta, getStepname(), null, null, this);
@@ -113,7 +64,53 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 			logBasic("template step initialized successfully");
 
 		}
-		
+		MailChimp mailchimp = new MailChimp();
+		log.logBasic("Key:" + meta.getOutputField() + " ; ListId: "
+				+ meta.getListId() + "; Campaign Id: " + meta.getIdCampaign());
+		mailchimp.initialize(meta.getOutputField(), meta.getListId());
+
+		log.logBasic("Operation selected: " + meta.getOperation());
+		log.logBasic("Campaign Id selected: " + meta.getIdCampaign() + " ;");
+
+		log.logBasic(getInputRowMeta().toString());
+
+		String campaign;
+		switch (meta.getOperation()) {
+		case 0:
+			log.logBasic("List Members: " + meta.getOperation());
+			emails = mailchimp.listMembers();
+			break;
+		case 1:
+			System.out.println("CAMPAIIIIIIIIIIGNS");
+			log.logBasic("Campaign Lists: " + meta.getOperation());
+			emails = mailchimp.getCampaigns();
+			break;
+		case 2:
+			log.logBasic("Emails Opened: " + meta.getOperation());
+			campaign = meta.getIdCampaign();
+			if (campaign == null || campaign.equals("null")) {
+				emails = mailchimp.getEmailsYES((String) r[0]);
+				System.out.println("Previous: " + (String) r[0]);
+			} else {
+				emails = mailchimp.getEmailsYES(campaign);
+			}
+			break;
+		case 3:
+			log.logBasic("Emails Not Opened: " + meta.getOperation());
+			campaign = meta.getIdCampaign();
+			if (campaign == null || campaign.equals("")
+					|| campaign.equals("null")) {
+				emails = mailchimp.getEmailsNO((String) r[0]);
+				System.out.println("Previous: " + (String) r[0]);
+			} else {
+				emails = mailchimp.getEmailsYES(campaign);
+			}
+			break;
+		default:
+			log.logError("Incorrect Option selected in operations list");
+		}
+
+		System.out.println("Emails: " + emails);
 		Object[] outputRow;
 		String email;
 		for (int i = 0; i < emails.size(); i++) {

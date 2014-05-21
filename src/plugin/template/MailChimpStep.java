@@ -47,6 +47,8 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 
 		Object[] r = getRow(); // get row, blocks when needed!
 
+		//System.out.println("R_1: " + r[0]);
+
 		if (r == null) // no more input to be expected...
 		{
 			setOutputDone();
@@ -81,7 +83,6 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 			emails = mailchimp.listMembers();
 			break;
 		case 1:
-			System.out.println("CAMPAIIIIIIIIIIGNS");
 			log.logBasic("Campaign Lists: " + meta.getOperation());
 			emails = mailchimp.getCampaigns();
 			break;
@@ -115,9 +116,10 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 		String email;
 		for (int i = 0; i < emails.size(); i++) {
 			email = emails.get(i);
-			System.out.println("Email: " + i + " " + email);
+//			System.out.println("Email: " + i + " " + email);
 			outputRow = new Object[1];
-			r = getRow();
+			//r = getRow();
+//			System.out.println("R_2: " + r[0]);
 			outputRow = RowDataUtil.addValueData(r,
 					data.outputRowMeta.size() - 1, email);
 			putRow(data.outputRowMeta, outputRow); // copy row to possible

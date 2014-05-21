@@ -31,10 +31,10 @@ public class MailChimpStepMeta extends BaseStepMeta implements
 		StepMetaInterface {
 
 	private static Class<?> PKG = MailChimpStepMeta.class; // for i18n purposes
-	private String outputField="key";
-	private String listId="list";
-	private String campaignId ="campaign";
-	private int operation=-1;
+	private String outputField;
+	private String listId;
+	private String campaignId;
+	private int operation = -1;
 
 	public MailChimpStepMeta() {
 		super();
@@ -77,7 +77,8 @@ public class MailChimpStepMeta extends BaseStepMeta implements
 		retval += "		<outputfield>" + getOutputField() + "</outputfield>"
 				+ Const.CR;
 		retval += "		<listid>" + getListId() + "</listid>" + Const.CR;
-		retval += "		<campaignid>" + getIdCampaign() + "</campaignid>" + Const.CR;
+		retval += "		<campaignid>" + getIdCampaign() + "</campaignid>"
+				+ Const.CR;
 		retval += "		<operation>" + getOperation() + "</operation>" + Const.CR;
 		return retval;
 	}
@@ -87,25 +88,25 @@ public class MailChimpStepMeta extends BaseStepMeta implements
 
 		// append the outputField to the output
 		ValueMetaInterface v = new ValueMeta();
-		v.setName("api_key");
+		/*v.setName("api_key");
 		v.setType(ValueMeta.TYPE_STRING);
 		v.setTrimType(ValueMeta.TRIM_TYPE_BOTH);
 		v.setOrigin(origin);
 
-		r.addValueMeta(v);
-
-		v = new ValueMeta();
-		v.setName("email");
-		v.setType(ValueMeta.TYPE_STRING);
-		v.setTrimType(ValueMeta.TRIM_TYPE_BOTH);
-		v.setOrigin(origin);
-
-		v = new ValueMeta();
-		v.setName("operation");
-		v.setType(ValueMeta.TYPE_STRING);
-		v.setTrimType(ValueMeta.TRIM_TYPE_BOTH);
-		v.setOrigin(origin);
-
+		r.addValueMeta(v);*/
+		if (this.operation == 1) {
+			v = new ValueMeta();
+			v.setName("campaign");
+			v.setType(ValueMeta.TYPE_STRING);
+			v.setTrimType(ValueMeta.TRIM_TYPE_BOTH);
+			v.setOrigin(origin);
+		} else {
+			v = new ValueMeta();
+			v.setName("email");
+			v.setType(ValueMeta.TYPE_STRING);
+			v.setTrimType(ValueMeta.TRIM_TYPE_BOTH);
+			v.setOrigin(origin);
+		}
 		r.addValueMeta(v);
 
 	}
@@ -123,8 +124,8 @@ public class MailChimpStepMeta extends BaseStepMeta implements
 					stepnode, "outputfield")));
 			setListId(XMLHandler.getNodeValue(XMLHandler.getSubNode(stepnode,
 					"listid")));
-			setIdCampaign(XMLHandler.getNodeValue(XMLHandler.getSubNode(stepnode,
-					"campaignid")));
+			setIdCampaign(XMLHandler.getNodeValue(XMLHandler.getSubNode(
+					stepnode, "campaignid")));
 			setOperaton(Integer.parseInt(XMLHandler.getNodeValue(XMLHandler
 					.getSubNode(stepnode, "operation"))));
 		} catch (Exception e) {
@@ -197,7 +198,8 @@ public class MailChimpStepMeta extends BaseStepMeta implements
 			rep.saveStepAttribute(id_transformation, id_step,
 					"outputfield", outputField); //$NON-NLS-1$
 			rep.saveStepAttribute(id_transformation, id_step, "listid", listId); //$NON-NLS-1$
-			rep.saveStepAttribute(id_transformation, id_step, "campaignid", campaignId); //$NON-NLS-1$
+			rep.saveStepAttribute(id_transformation, id_step,
+					"campaignid", campaignId); //$NON-NLS-1$
 			rep.saveStepAttribute(id_transformation, id_step,
 					"operation", operation); //$NON-NLS-1$
 		} catch (Exception e) {

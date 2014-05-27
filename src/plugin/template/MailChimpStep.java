@@ -88,20 +88,22 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 		case 2:
 			log.logBasic("Emails Opened: " + meta.getOperation());
 			campaign = meta.getIdCampaign();
+			// r[1] must be generalized taking some metadata from previous step
 			if (campaign == null || campaign.equals("null")) {
-				emails = mailchimp.getEmailsYES((String) r[0]);
-				System.out.println("Previous: " + (String) r[0]);
+				emails = mailchimp.getEmailsYES((String) r[1]);
+				//System.out.println("Previous: " + (String) r[0]);
 			} else {
 				emails = mailchimp.getEmailsYES(campaign);
 			}
 			break;
 		case 3:
+			// r[1] must be generalized taking some metadata from previous step
 			log.logBasic("Emails Not Opened: " + meta.getOperation());
 			campaign = meta.getIdCampaign();
 			if (campaign == null || campaign.equals("")
 					|| campaign.equals("null")) {
-				emails = mailchimp.getEmailsNO((String) r[0]);
-				System.out.println("Previous: " + (String) r[0]);
+				emails = mailchimp.getEmailsNO((String) r[1]);
+				System.out.println("Previous: " + (String) r[1]);
 			} else {
 				emails = mailchimp.getEmailsYES(campaign);
 			}
@@ -117,7 +119,7 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 		for (int i = 0; i < emails.size(); i++) {
 			email = emails.get(i);
 			// System.out.println("Email: " + i + " " + email);
-			//outputRow = new Object[1000];
+			// outputRow = new Object[1000];
 			r = getRow();
 			outputRow = RowDataUtil.addValueData(r,
 					data.outputRowMeta.size() - 1, email);

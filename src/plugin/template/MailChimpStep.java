@@ -14,7 +14,6 @@ package plugin.template;
 import java.util.List;
 
 import org.pentaho.di.core.Const;
-import org.pentaho.di.core.RowSet;
 import org.pentaho.di.core.exception.KettleException;
 import org.pentaho.di.core.row.RowDataUtil;
 import org.pentaho.di.core.row.RowMetaInterface;
@@ -47,7 +46,7 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 
 		Object[] r = getRow(); // get row, blocks when needed!
 
-		//System.out.println("R_1: " + r[0]);
+		// System.out.println("R_1: " + r[0]);
 
 		if (r == null) // no more input to be expected...
 		{
@@ -57,7 +56,7 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 
 		if (first) {
 			first = false;
-
+			System.out.println("FIRST ROWWWWW");
 			// Check if there are any rows from the previous step
 
 			data.outputRowMeta = (RowMetaInterface) getInputRowMeta().clone();
@@ -114,17 +113,18 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 		System.out.println("Emails: " + emails);
 		Object[] outputRow;
 		String email;
+
 		for (int i = 0; i < emails.size(); i++) {
 			email = emails.get(i);
-//			System.out.println("Email: " + i + " " + email);
-			outputRow = new Object[1];
-			//r = getRow();
-//			System.out.println("R_2: " + r[0]);
+			// System.out.println("Email: " + i + " " + email);
+			//outputRow = new Object[1000];
+			r = getRow();
 			outputRow = RowDataUtil.addValueData(r,
 					data.outputRowMeta.size() - 1, email);
 			putRow(data.outputRowMeta, outputRow); // copy row to possible
 													// alternate
 													// rowset(s)
+			outputRow = new Object[1];
 		}
 
 		if (checkFeedback(getLinesRead())) {
@@ -151,20 +151,16 @@ public class MailChimpStep extends BaseStep implements StepInterface {
 	//
 	// Run is were the action happens!
 	public void run() {
-		logBasic("Starting to run...");
-		try {
-			while (processRow(meta, data) && !isStopped())
-				;
-		} catch (Exception e) {
-			logError("Unexpected error : " + e.toString());
-			logError(Const.getStackTracker(e));
-			setErrors(1);
-			stopAll();
-		} finally {
-			dispose(meta, data);
-			logBasic("Finished, processing " + getLinesRead() + " rows");
-			markStop();
-		}
+		System.out.println("And finally..." + data.outputRowMeta);
+		/*
+		 * logDebug("Starting to run..."); try { while (processRow(meta, data)
+		 * && !isStopped()) ; } catch (Exception e) {
+		 * logError("Unexpected error : " + e.toString());
+		 * logError(Const.getStackTracker(e)); setErrors(1); stopAll(); }
+		 * finally { System.out.println("And finally..." + data.outputRowMeta);
+		 * dispose(meta, data); logBasic("Finished, processing " +
+		 * getLinesRead() + " rows"); markStop(); }
+		 */
 	}
 
 }
